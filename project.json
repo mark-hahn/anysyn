@@ -1,0 +1,24 @@
+{
+  "name": "csyn",
+  "version": "0.0.1",
+  "description": "Preprocessor to add coffeescript syntax to standard jacascript",
+  "main": "lib/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mark-hahn/csyn"
+  },
+  "keywords": [
+    "csyn",
+    "es6",
+    "coffeescript",
+    "preprocessor"
+  ],
+  "author": "Mark Hahn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mark-hahn/csyn/issues"
+  },
+  "homepage": "https://github.com/mark-hahn/csyn",
+  "dependencies": {
+  }
+}
