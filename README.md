@@ -1,22 +1,25 @@
-# CSYN
+# AnySyn
 
-## Preprocessor to add coffeescript syntax features to standard javascript
+## Atom editor: edit javascript source files with custom syntax
 
-CSYN is a preprocessor that allows standard javascript to be created using many syntax features stolen from coffeescript.  When combined with ES6 you get a "language" that is similar to coffeescript but is real javascript with simple syntax substitutions.
+AnySyn is an Atom editor plugin that allows you to edit javascript source files with an alternate syntax.  For example the word `function` could appear as `->` when editing but when saved the valid javascript `function` keyword would be used.  
 
-CSYN is so simple that it could almost be written with all regex replacements.  For example the keyword `->` is replaced with `function`.  A more complex example is the whitespace-significant indentation being replaced by braces.
+The syntax conversion is lossless and one can switch to the new syntax and back to javascript with only changed code differing in format.  This solves the problem of format changes messing up the git diffs.
 
-CSYN features are optional which means plain JS is valid CSYN, but converting from JS to CSYN will use all available features.
+The first alternate syntax supported is very similar to coffeescript. When combined with ES6 you get a "language" that is similar to coffeescript but is real javascript with simple syntax substitutions. This allows one to work on someone else's javascript file using the "coffeescript" syntax and the file owner would only see javascript.
+
+AnySyn is so simple that it could almost be written with all regex replacements. However, significant-whitespace support such as used in Python and Javascript is more complex and requires using the AST.
+
+In the beginning the syntax will be specified by writing code. It will convert JS to the AST, generate the source with the new syntax, and then when saving it will do the opposite.  Note that a new grammar will need to be written for Atom to match the new syntax.
 
 ### Motivation
 
-I have used coffeescript exclusively for four or five years and loved it.  When I originally looked at changing from coffeescript to ES6 I thought I could never use it because it still uses the horrible C syntax with all the noise.  Then it occured to me that something like CSYN could fix that.  You write the code mentally as real javascript but without the noise.
+I have used coffeescript exclusively for four or five years and loved it.  When I originally looked at changing from coffeescript to ES6 I thought I could never use it because it still uses the C syntax with all the noise.  Then it occured to me that something like AnySyn could fix that.  You write the code mentally as real javascript but with easier writing and reading.
 
-### Features
+### Coffeescript-like syntax Features
 
-This is a wish-list.  Some may not be included and I assume more will be added.
+This is a wish-list for the first supported syntax. Some features may not be included and I assume more will be added.  Note that each feature is optional via settings. E.g, if you don't like using `<-` for `return` then you can turn off that feature.
 
-- Works with babel to support most browser versions
 - Significant whitespace, no more ugly pyramid of braces
 - Parens usually not needed in `for`, `if`, or function call
 - Skinny and fat arrows with almost the same semantics as coffeescript
@@ -26,30 +29,22 @@ This is a wish-list.  Some may not be included and I assume more will be added.
 - `#var` replaced with `let var`
 - `x@y`  replaced with `x.get(y)` (map access)
 
-### What CSYN doesn't do
+### What AnySyn doesn't do
 
-CSYN makes no changes to ES6 just to be more compatible with coffeescript. CSYN is only to improve ES6 noisiness. For example these are **not** supported.
+AnySyn makes no changes to ES6 just to be more compatible with coffeescript. AnySyn is only to reduce ES6 noisiness. For example these are **not** supported.
 
 ```
-str = `CSYN doesn't change #{this} to ${that}`
+str = `AnySyn doesn't change #{this} to ${that}`
 # this non-comment doesn't become // this comment
 ```
 
 ### Atom integration out of the gate 
 
-CSYN will be supported by Atom the same way coffeescript is.  This is because Atom now supports Babel as a first-class language.
-
-Not only will a standard CSYN grammar support highlighting, but converting the buffer between CSYN and js will be supported with one command.
-
-Also, there will be a mode where the file is always stored as javascript but edited as CSYN.  This eliminates the need to run the pre-processor at build time.  This will also allow editing other's javascript files in CSYN without them even knowing about CSYN.
+AnySyn will be supported by Atom the same as a first-class language.  When a javascript file is loaded it is automatically parsed to an AST and then the editor buffer receives the source with the new syntax. It will have highlighting customized for the new syntax. Flipping the buffer between AnySyn and JS will be supported with one quick command.
 
 ### Status
 
-Just a specification at this point.  There is nothing more than this readme.  However, this looks like a simple project to implement.  I doubt that an AST will be needed.  Most will be done with regexes.
-
-CSYN will be written in JS ES6 so it will be effectively written in CSYN.
-
-When stored as a CSYN file the file suffix will be `.csyn`.
+Just a specification at this point.  There is nothing more than this readme.
 
 ### Why switch from Coffeescript
 
@@ -64,7 +59,7 @@ Here is my personal list of reasons for changing to ES6.
 - **Larger community:**  Coffeescript has divided the community.  I can finally publish code without people bitching they can't read it.
 - **Advanced features:**  While some coffeescript features are lost, like all code being expressions, there are many, if not more, features gained from ES6, like iterators.
 
-### Examples
+### Examples of the "CoffeeScript" syntax
 
 These examples are mostly taken from [here](https://medium.com/sons-of-javascript/javascript-an-introduction-to-es6-1819d0d89a0f).
 
@@ -74,8 +69,8 @@ let square = x => x * x;
 let add = (a, b) => a + b;
 let pi = () => 3.1415;
 
-//--- CSYN ---
-#square = x => x * x   // # changed to let
+//--- AnySyn ---
+#square = x => x * x   // `#` changed to let
 #add = (a, b) => a + b // no semicolons
 #pi = => 3.1415        // no empty parens
 ```
@@ -85,7 +80,7 @@ let pi = () => 3.1415;
 var square = function(x) { return x * x; };
 var pi = function() { return 3.1415; };
 
-//--- CSYN ---
+//--- AnySyn ---
 var square = (x) -> <- x * x  // anonymous function() becomes () ->
 var pi = -> <- 3.1415         // return becomes <-
 ```
@@ -99,7 +94,7 @@ if (x == 0) {
   }
 }
 
-//--- CSYN ---
+//--- AnySyn ---
 if x == 0                      // parens optional
   for #i = 0; i < 10; i++  // whitespace significant
     y += 10
@@ -116,7 +111,7 @@ try {
  );
 }
 
-//--- CSYN ---
+//--- AnySyn ---
 -> helloWorld (a = 'hello', b = 'world')  // -> changed to function
   try
    console.log a  // call doesn't need parens
@@ -137,7 +132,7 @@ class Parrot extends Bird {
   }
 }
 
-//--- CSYN ---
+//--- AnySyn ---
 class Parrot extends Bird
   constructor name      // no parens needed
     super name
@@ -155,7 +150,7 @@ function* range(start, end, step) {
   }
 }
 
-//--- CSYN ---
+//--- AnySyn ---
 ->* range (start, end, step)  // ->* means generator function
   while start < end
     yield start
@@ -167,10 +162,19 @@ function* range(start, end, step) {
 map.set(key, value)
 map.get(key)
 
-//--- CSYN ---
+//--- AnySyn ---
 map@key = value  //  @  replaces get and set for maps
 map@key
 ```
 
+### Ideas for the future
+
+I know it is a bit premature but here are ideas that have been tossed around ...
+
+- Adding support for icons.  The lamda symbol could be used instead of `=>`.
+- Some wild kind of editing directly on the AST instead of text.
+- Adding a syntax specification language that programmatically creates new syntaxes and grammars.
+- Supporting other languages than javascript
+
 ### License
-  CSYN is copyright Mark Hahn via the MIT license.
+  AnySyn is copyright Mark Hahn via the MIT license.

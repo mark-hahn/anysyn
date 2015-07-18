@@ -1,24 +1,24 @@
 {
-  "name": "csyn",
+  "name": "anysyn",
   "version": "0.0.1",
-  "description": "Preprocessor to add coffeescript syntax to standard jacascript",
+  "description": "Atom editor: edit javascript source files with custom syntax",
   "main": "lib/main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mark-hahn/csyn"
+    "url": "https://github.com/mark-hahn/anysyn"
   },
   "keywords": [
-    "csyn",
-    "es6",
-    "coffeescript",
-    "preprocessor"
+    "anysyn",
+    "atom",
+    "javascript",
+    "syntax"
   ],
   "author": "Mark Hahn",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mark-hahn/csyn/issues"
+    "url": "https://github.com/mark-hahn/anysyn/issues"
   },
-  "homepage": "https://github.com/mark-hahn/csyn",
+  "homepage": "https://github.com/mark-hahn/anysyn",
   "dependencies": {
   }
 }
