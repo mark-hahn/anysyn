@@ -1,28 +1,25 @@
 # AnySyn
 
-## Atom editor: edit javascript source files with custom syntax
+AnySyn is an Atom editor package that allows you to edit javascript source files with custom syntax.  For example the word `function` could appear as `->` when editing but when saved the valid javascript `function` keyword would be used.  
 
-AnySyn is an Atom editor plugin that allows you to edit javascript source files with an alternate syntax.  For example the word `function` could appear as `->` when editing but when saved the valid javascript `function` keyword would be used.  
+AnySyn means "Any Syntax" and any javascript-compatible syntax could be developed and used by AnySyn.  The syntax would be implemented as a service provider package (Atom plugin) for AnySyn to call.
 
-The syntax conversion is lossless and one can switch to the new syntax and back to javascript with only changed code differing in format.  This solves the problem of format changes messing up the git diffs.
+The syntax conversion is not lossless but every time the javascript is saved it will be processed by a [beautifier](https://github.com/beautify-web/js-beautify). This means a project will have to agree on beautifier preferences which every contributor follows.  This solves the problem of format changes messing up the git diffs. 
+### One included syntax (free)
 
-The first alternate syntax supported is very similar to coffeescript. When combined with ES6 you get a "language" that is similar to coffeescript but is real javascript with simple syntax substitutions. This allows one to work on someone else's javascript file using the "coffeescript" syntax and the file owner would only see javascript.
-
-AnySyn is so simple that it could almost be written with all regex replacements. However, significant-whitespace support such as used in Python and Javascript is more complex and requires using the AST.
-
-In the beginning the syntax will be specified by writing code. It will convert JS to the AST, generate the source with the new syntax, and then when saving it will do the opposite.  Note that a new grammar will need to be written for Atom to match the new syntax.
+The first alternate syntax Atom package will be released shortly after AnySyn. This will have features stolen from CoffeeScript. When combined with ES6 you would have a "language" that is similar to CoffeeScript but is real javascript with simple syntax substitutions. This allows one to work on someone else's javascript file using the CoffeeScript syntax and the file owner would only see javascript.
 
 ### Motivation
 
-I have used coffeescript exclusively for four or five years and loved it.  When I originally looked at changing from coffeescript to ES6 I thought I could never use it because it still uses the C syntax with all the noise.  Then it occured to me that something like AnySyn could fix that.  You write the code mentally as real javascript but with easier writing and reading.
+I have used CoffeeScript exclusively for four or five years and loved it.  When I originally looked at changing from CoffeeScript to ES6 I thought I could never use it because it still uses the C syntax with all the noise.  Then it occured to me that something like AnySyn could fix that.  You write the code mentally as real javascript but with easier writing and reading.
 
-### Coffeescript-like syntax Features
+### CoffeeScript package syntax features
 
-This is a wish-list for the first supported syntax. Some features may not be included and I assume more will be added.  Note that each feature is optional via settings. E.g, if you don't like using `<-` for `return` then you can turn off that feature.
+This is a wish-list for the (almost) CoffeeScript syntax. Some features may not be included and I assume more will be added.  Note that each feature is optional via settings. E.g, if you don't like using `<-` for `return` then you can turn off that feature.
 
 - Significant whitespace, no more ugly pyramid of braces
-- Parens usually not needed in `for`, `if`, or function call
-- Skinny and fat arrows with almost the same semantics as coffeescript
+- Parens are usually not needed in `for`, `if`, or function calls
+- Skinny and fat arrows with almost the same semantics as CoffeeScript
 - No need for empty parens before function arrows
 - `@var` replaced with `this.var`
 - `<-`   replaced with `return`
@@ -31,7 +28,7 @@ This is a wish-list for the first supported syntax. Some features may not be inc
 
 ### What AnySyn doesn't do
 
-AnySyn makes no changes to ES6 just to be more compatible with coffeescript. AnySyn is only to reduce ES6 noisiness. For example these are **not** supported.
+AnySyn makes no changes to ES6 just to be more compatible with CoffeeScript. AnySyn is only to reduce ES6 noisiness. For example these are **not** supported.
 
 ```
 str = `AnySyn doesn't change #{this} to ${that}`
@@ -40,28 +37,26 @@ str = `AnySyn doesn't change #{this} to ${that}`
 
 ### Atom integration out of the gate 
 
-AnySyn will be supported by Atom the same as a first-class language.  When a javascript file is loaded it is automatically parsed to an AST and then the editor buffer receives the source with the new syntax. It will have highlighting customized for the new syntax. Flipping the buffer between AnySyn and JS will be supported with one quick command.
+AnySyn will be supported by Atom the same as a first-class language.  When a javascript file is loaded it is automatically parsed to an AST, the plugin will convert that to text, and then AnySyn creates the editor buffer with the new syntax. It will have highlighting customized for the new syntax. Flipping the buffer between the AnySyn syntax and JS will be supported with one quick command.
 
 ### Status
 
 Just a specification at this point.  There is nothing more than this readme.
 
-### Why switch from Coffeescript
+### Why switch from CoffeeScript
 
-Many coffeescript users like me are converting to ES6.  For a quick writeup comparing the two see [this](https://gist.github.com/danielgtaylor/0b60c2ed1f069f118562)
+Many CoffeeScript users like me are converting to ES6.  For a quick writeup comparing the two see [this](https://gist.github.com/danielgtaylor/0b60c2ed1f069f118562)
 
 Here is my personal list of reasons for changing to ES6.
 
-- **Improved debugging:** Even with source maps coffeescript is harder to debug.  
+- **Improved debugging:** Even with source maps CoffeeScript is harder to debug.  
   - You can't hover over a variable like `@var` to see the value
-  - You can't evaluate coffeescript in the console  
-  - Stepping can be confusing because of line mismatch.  I sometimes have to step many times to get past one line of coffeescript.
-- **Larger community:**  Coffeescript has divided the community.  I can finally publish code without people bitching they can't read it.
-- **Advanced features:**  While some coffeescript features are lost, like all code being expressions, there are many, if not more, features gained from ES6, like iterators.
+  - You can't evaluate CoffeeScript in the console  
+  - Stepping can be confusing because of line mismatch.  I sometimes have to step many times to get past one line of CoffeeScript.
+- **Larger community:**  CoffeeScript has divided the community.  I can finally publish code without people bitching they can't read it.
+- **Advanced features:**  While some CoffeeScript features are lost, like all code being expressions, there are many, if not more, features gained from ES6, like iterators.
 
 ### Examples of the "CoffeeScript" syntax
-
-These examples are mostly taken from [here](https://medium.com/sons-of-javascript/javascript-an-introduction-to-es6-1819d0d89a0f).
 
 ```javascript
 //--- JS ---
@@ -166,6 +161,25 @@ map.get(key)
 map@key = value  //  @  replaces get and set for maps
 map@key
 ```
+
+### Implementation
+
+
+The following details how AnySyn would work and the interface it would expect from a syntax plugin.
+
+- AnySyn would be a normal Atom package that when enabled would enable an invisible conversion process.  Opening javascript would just appear with the new syntax as if it was stored that way.  
+
+- A config setting could allow specific files, maybe a regex on the path, to be linked to specific syntax plugins.  That would also specify an Atom grammar. The highlighting would be implemented the standard Atom way without any interaction with AnySyn.
+
+- The plugin would provide two simple calls.
+  - One call would accept an AST and return the text with new syntax.  This would use some code generator, probably [escodegen](https://github.com/estools/escodegen).
+  - The second call would do the opposite.  It would take the text and return an AST, probably using [esprima](https://github.com/jquery/esprima) or [acorn](https://github.com/marijnh/acorn).
+
+- AnySyn would create a texteditor, read the file, convert the javascript to an AST, call the plugin to get the converted text, and place it in the buffer. 
+
+- AnySyn would trap any save and do the reverse.  Before the actual save it would pass the javascript through the beautifer.
+
+- AnySyn would also provide an Atom command to toggle the buffer between the standard javascript and the new syntax.  This would be especially useful in debugging.  It would do this using the same two plugin calls.
 
 ### Ideas for the future
 
