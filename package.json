@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/mark-hahn/anysyn",
   "dependencies": {
-    "debug": "^2.2.0"
+    "sub-atom": "^1.0.0"
   },
   "engines": {
     "atom": "^1.0.0"
