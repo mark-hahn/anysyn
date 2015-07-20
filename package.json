@@ -1,7 +1,7 @@
 {
   "name": "anysyn",
   "version": "0.0.1",
-  "description": "Atom editor: edit javascript source files with custom syntax",
+  "description": "Atom editor package: Edit javascript source files with any custom syntax",
   "main": "lib/main.js",
   "repository": {
     "type": "git",
@@ -20,5 +20,16 @@
   },
   "homepage": "https://github.com/mark-hahn/anysyn",
   "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "engines": {
+    "atom": "^1.0.0"
+  },
+  "consumedServices": {
+    "anySynSyntaxProvider": {
+      "versions": {
+        "^1.0.0": "addSyntax"
+      }
+    }
   }
 }
