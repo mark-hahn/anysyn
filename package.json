@@ -26,9 +26,9 @@
     "atom": "^1.0.0"
   },
   "consumedServices": {
-    "anySynSyntaxProvider": {
+    "AnySyn-Syntax": {
       "versions": {
-        "^1.0.0": "addSyntax"
+        "^0.1.0": "addSyntax"
       }
     }
   }
